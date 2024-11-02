@@ -147,3 +147,6 @@ class HardwareBase(ABC):
 
   def get_modem_data_usage(self):
     return -1, -1
+  
+  def has_internal_panda(self) -> bool:
+    return False

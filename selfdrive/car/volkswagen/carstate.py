@@ -107,11 +107,11 @@ class CarState(CarStateBase):
     # braking release bits are set.
     # Refer to VW Self Study Program 890253: Volkswagen Driver Assistance
     # Systems, chapter on Front Assist with Braking: Golf Family for all MQB
-    ret.stockFcw = bool(ext_cp.vl["ACC_10"]["AWV2_Freigabe"])
-    ret.stockAeb = bool(ext_cp.vl["ACC_10"]["ANB_Teilbremsung_Freigabe"]) or bool(ext_cp.vl["ACC_10"]["ANB_Zielbremsung_Freigabe"])
+    ret.stockFcw = False
+    ret.stockAeb = False
 
     # Update ACC radar status.
-    self.acc_type = ext_cp.vl["ACC_06"]["ACC_Typ"]
+    self.acc_type = 2
     if pt_cp.vl["TSK_06"]["TSK_Status"] == 2:
       # ACC okay and enabled, but not currently engaged
       ret.cruiseState.available = True
@@ -131,7 +131,7 @@ class CarState(CarStateBase):
     # Update ACC setpoint. When the setpoint is zero or there's an error, the
     # radar sends a set-speed of ~90.69 m/s / 203mph.
     if self.CP.pcmCruise:
-      ret.cruiseState.speed = ext_cp.vl["ACC_02"]["ACC_Wunschgeschw_02"] * CV.KPH_TO_MS
+      ret.cruiseState.speed = 0
       if ret.cruiseState.speed > 90:
         ret.cruiseState.speed = 0
 
@@ -336,8 +336,8 @@ class CarState(CarStateBase):
 
     if CP.networkLocation == NetworkLocation.fwdCamera:
       # Radars are here on CANBUS.pt
-      signals += MqbExtraSignals.fwd_radar_signals
-      checks += MqbExtraSignals.fwd_radar_checks
+      # signals += MqbExtraSignals.fwd_radar_signals
+      # checks += MqbExtraSignals.fwd_radar_checks
       if CP.enableBsm:
         signals += MqbExtraSignals.bsm_radar_signals
         checks += MqbExtraSignals.bsm_radar_checks
@@ -367,8 +367,8 @@ class CarState(CarStateBase):
       ]
     else:
       # Radars are here on CANBUS.cam
-      signals += MqbExtraSignals.fwd_radar_signals
-      checks += MqbExtraSignals.fwd_radar_checks
+      # signals += MqbExtraSignals.fwd_radar_signals
+      # checks += MqbExtraSignals.fwd_radar_checks
       if CP.enableBsm:
         signals += MqbExtraSignals.bsm_radar_signals
         checks += MqbExtraSignals.bsm_radar_checks

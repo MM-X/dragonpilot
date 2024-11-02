@@ -98,6 +98,9 @@ class Tici(HardwareBase):
   def get_os_version(self):
     with open("/VERSION") as f:
       return f.read().strip()
+      
+  def has_internal_panda(self):
+    return True
 
   def get_device_type(self):
     return "tici"
